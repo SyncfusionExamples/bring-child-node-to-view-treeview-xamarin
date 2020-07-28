@@ -2,6 +2,10 @@
 
 You can programmatically bring the child node to the view when all the root nodes are collapsed using [BringIntoView](https://help.syncfusion.com/cr/xamarin/Syncfusion.SfTreeView.XForms~Syncfusion.XForms.TreeView.SfTreeView~BringIntoView.html) method by expanding the particular root node in Xamarin.Forms [SfTreeView](https://help.syncfusion.com/xamarin/treeview/overview).
 
+You can also refer the following article.
+
+https://www.syncfusion.com/kb/11802/how-to-bring-the-treeview-child-node-to-view-when-the-root-node-is-collapsed-in-xamarin
+
 **C#**
 
 In the [Button.Clicked](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.button.clicked) event, bring any child item using [BringIntoView](https://help.syncfusion.com/cr/xamarin/Syncfusion.SfTreeView.XForms~Syncfusion.XForms.TreeView.SfTreeView~BringIntoView.html) method.
