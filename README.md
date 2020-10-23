@@ -6,9 +6,31 @@ You can also refer the following article.
 
 https://www.syncfusion.com/kb/11802/how-to-bring-the-treeview-child-node-to-view-when-the-root-node-is-collapsed-in-xamarin
 
+**XAML**
+
+Use [SfTreeView.NodePopulationMode](https://help.syncfusion.com/cr/xamarin/Syncfusion.XForms.TreeView.SfTreeView.html#Syncfusion_XForms_TreeView_SfTreeView_NodePopulationMode) property as Instant for SfTreeView.
+
+``` XML
+<syncfusion:SfTreeView x:Name="treeView" ChildPropertyName="SubFiles" NodePopulationMode="Instant" ItemTemplateContextType="Node" ItemsSource="{Binding ImageNodeInfo}">
+    <syncfusion:SfTreeView.ItemTemplate>
+        <DataTemplate>
+            <Grid x:Name="grid" RowSpacing="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding Content.ImageIcon}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="35" WidthRequest="35"/>
+                <Grid Grid.Column="1" RowSpacing="1" Padding="1,0,0,0" VerticalOptions="Center">
+                    <Label LineBreakMode="NoWrap" Text="{Binding Content.ItemName}" VerticalTextAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </syncfusion:SfTreeView.ItemTemplate>
+</syncfusion:SfTreeView>
+```
 **C#**
 
-In the [Button.Clicked](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.button.clicked) event, bring any child item using [BringIntoView](https://help.syncfusion.com/cr/xamarin/Syncfusion.SfTreeView.XForms~Syncfusion.XForms.TreeView.SfTreeView~BringIntoView.html) method.
+In the [Button.Clicked](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.button.clicked) event, bring any child item using [BringIntoView](https://help.syncfusion.com/xamarin/treeview/scrolling#scroll-to-the-collapsed-child-item) method.
 
 ``` c#
 public class Behavior : Behavior<ContentPage>
@@ -28,45 +50,9 @@ public class Behavior : Behavior<ContentPage>
     {
         var viewModel = (sender as SfTreeView).BindingContext as FileManagerViewModel;
         var item = viewModel.ImageNodeInfo[3].SubFiles[1];
-
-        if (item != null)
-        {
-            if (ExpandToSelection(TreeView, TreeView.Nodes, item))
-            {
-                TreeView.BringIntoView(item, true);
-                TreeView.SelectedItem = item;
-            }
-        }
+        TreeView.BringIntoView(item, true, true);
+        TreeView.SelectedItem = item;
     }
-}
-```
-Expands the all the parent nodes using [ExpandNode](https://help.syncfusion.com/cr/cref_files/xamarin/Syncfusion.SfTreeView.XForms~Syncfusion.XForms.TreeView.SfTreeView~ExpandNode.html) method. The **ExpandToSelection** method gets called recursively until the root node is reached based on the [HasChildNodes](https://help.syncfusion.com/cr/cref_files/xamarin/Syncfusion.SfTreeView.XForms~Syncfusion.TreeView.Engine.TreeViewNode~HasChildNodes.html) property.
-
-``` c#
-private bool ExpandToSelection(SfTreeView tree, TreeViewNodeCollection nodes, object model)
-{
-    foreach (var node in nodes)
-    {
-        if ((node.Content as FileManager).ItemName == (model as FileManager).ItemName)
-        {
-            var parent = node.ParentNode;
-            while (parent != null)
-            {
-                tree.ExpandNode(parent);
-                parent = parent.ParentNode;
-            }
-            return true;
-        }
-    }
-    foreach (var node in nodes)
-    {
-        if (node.HasChildNodes)
-        {
-            if (ExpandToSelection(tree, node.ChildNodes, model))
-                return true;
-        }
-    }
-    return false;
 }
 ```
 **Output**
