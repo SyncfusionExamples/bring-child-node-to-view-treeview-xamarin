@@ -14,6 +14,7 @@
     </ContentPage.Behaviors>
     
     <StackLayout>
+        <Button x:Name="button" Text="Bring child to view" HeightRequest="50"/>
         <syncfusion:SfTreeView x:Name="treeView" ChildPropertyName="SubFiles" NodePopulationMode="Instant" ItemTemplateContextType="Node" ItemsSource="{Binding ImageNodeInfo}">
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>

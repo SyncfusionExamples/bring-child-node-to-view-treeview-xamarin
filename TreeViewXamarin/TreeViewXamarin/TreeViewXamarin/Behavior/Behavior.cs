@@ -12,6 +12,7 @@ namespace TreeViewXamarin
         #region Fields
 
         SfTreeView TreeView;
+        Button Button;
         #endregion
 
         #region Overrides
@@ -19,59 +20,27 @@ namespace TreeViewXamarin
         protected override void OnAttachedTo(ContentPage bindable)
         {
             TreeView = bindable.FindByName<SfTreeView>("treeView");
-            TreeView.Loaded += TreeView_Loaded;
+            Button = bindable.FindByName<Button>("button");
+            Button.Clicked += Button_Clicked;
             base.OnAttachedTo(bindable);
         }
 
         protected override void OnDetachingFrom(ContentPage bindable)
         {
-            TreeView.Loaded -= TreeView_Loaded;
+            Button.Clicked -= Button_Clicked;
+            Button = null;
             TreeView = null;
             base.OnDetachingFrom(bindable);
         }
         #endregion
 
         #region Methods
-        private void TreeView_Loaded(object sender, TreeViewLoadedEventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
-            var viewModel = (sender as SfTreeView).BindingContext as FileManagerViewModel;
+            var viewModel = (sender as Button).BindingContext as FileManagerViewModel;
             var item = viewModel.ImageNodeInfo[3].SubFiles[1];
-
-            if (item != null)
-            {
-                if (ExpandToSelection(TreeView, TreeView.Nodes, item))
-                {
-                    TreeView.BringIntoView(item, true);
-                    TreeView.SelectedItem = item;
-                }
-            }
-        }
-
-        private bool ExpandToSelection(SfTreeView tree, TreeViewNodeCollection nodes, object model)
-        {
-            foreach (var node in nodes)
-            {
-                if ((node.Content as FileManager).ItemName == (model as FileManager).ItemName)
-                {
-                    var parent = node.ParentNode;
-                    while (parent != null)
-                    {
-                        tree.ExpandNode(parent);
-                        parent = parent.ParentNode;
-                    }
-                    return true;
-                }
-            }
-            foreach (var node in nodes)
-            {
-                if (node.HasChildNodes)
-                {
-                    var found = ExpandToSelection(tree, node.ChildNodes, model);
-                    if (found)
-                        return true;
-                }
-            }
-            return false;
+            TreeView.BringIntoView(item, true, true);
+            TreeView.SelectedItem = item;
         }
         #endregion
     }
